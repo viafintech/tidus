@@ -1,42 +1,61 @@
 module ActiveRecord
 	module Anonymization
-    def anon_postfix
-      @anon_postfix || "anonymized"
+    def view_postfix
+      @view_postfix || "anonymized"
     end
 
-    def anon_postfix=(val)
-      @anon_postfix = val
+    def view_postfix=(val)
+      @view_postfix = val
     end
 
     def view_name
-      @view_name || "#{table_name}_#{anon_postfix}"
+      @view_name || "#{table_name}_#{view_postfix}"
     end
 
     def view_name=(val)
       @view_name = val
     end
 
-    def anonymize(*attributes)
-      # defaults = attributes.extract_options!.dup
-      # validations = defaults.slice!(*_anonymize_default_keys)
+    def view_columns
+      @view_columns ||= {}
+      default_view_columns.merge(@view_columns)
+                          .map{ |k,v| ["#{v} AS #{k}"] }
+                          .flatten
+    end
 
-      # raise ArgumentError, "You need to supply at least one attribute" if attributes.empty?
-      # raise ArgumentError, "You need to supply at least one validation" if validations.empty?
+    def default_view_columns
+      defaults = {}
+      column_names.each do |column|
+        defaults[column.to_sym] = "#{table_name}.#{column}"
+      end
+      defaults
+    end
 
-      # defaults[:attributes] = attributes
+    def anonymizes(*attributes)
+      @view_columns ||= {}
 
-      # validations.each do |key, options|
-      #   next unless options
-      #   key = "#{key.to_s.camelize}Validator"
+      options = attributes.extract_options!.dup
+      columns = attributes - [options]
 
-      #   begin
-      #     validator = key.include?('::') ? key.constantize : const_get(key)
-      #   rescue NameError
-      #     raise ArgumentError, "Unknown validator: '#{key}'"
-      #   end
+      raise ArgumentError, "You need to supply at least one attribute" if attributes.empty?
+      raise ArgumentError, "You need to supply a method" if options[:method].blank?
 
-      #   anonymize_with(validator, defaults.merge(_parse_validates_options(options)))
-      # end
+      columns.each do |column|
+        key = "#{options[:method].to_s.camelize}Anonymizer"
+
+        begin
+          if key.include?('::')
+            klass = key.constantize
+          else
+            klass = "ActiveRecordAnonymize::#{key}"
+          end
+          klass = const_get("ActiveRecordAnonymize::#{key}")
+        rescue NameError
+          raise ArgumentError, "Unknown anonymizer: '#{key}'"
+        end
+
+        @view_columns[column.to_sym] = klass.anonymize(table_name, column, options)
+      end
     end
 
 	end

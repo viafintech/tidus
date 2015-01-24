@@ -17,19 +17,27 @@ namespace :db do
 		Rails.application.eager_load! if defined?(Rails)
 		ActiveRecord::Base.descendants.each do |c|
 			next if c.table_name == "schema_migrations"
-			puts "Generating view '#{c.view_name}' for table '#{c.table_name}'"
 
-			ActiveRecord::Base.connection.execute(
-				"CREATE VIEW #{c.view_name} AS " +
-				"SELECT #{c.column_names.join(', ')} " +
-				"FROM #{c.table_name}"
-			)
+      if ActiveRecord::Base.connection.table_exists? c.table_name
+  			puts "Generating view '#{c.view_name}' for table '#{c.table_name}'"
+
+  			ActiveRecord::Base.connection.execute(
+  				"CREATE VIEW #{c.view_name} AS " +
+  				"SELECT #{c.view_columns.join(', ')} " +
+  				"FROM #{c.table_name}"
+  			)
+      end
 		end
 	end
 end
 
 Rake::Task["db:migrate"].enhance ["db:clear_views"]
+Rake::Task["db:rollback"].enhance ["db:clear_views"]
 
 Rake::Task["db:migrate"].enhance do
+  Rake::Task["db:generate_views"].invoke
+end
+
+Rake::Task["db:rollback"].enhance do
   Rake::Task["db:generate_views"].invoke
 end
