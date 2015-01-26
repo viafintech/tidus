@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.name          = "activerecord_anonymize"
   spec.version       = ActiveRecordAnonymize::VERSION
   spec.authors       = ["Tobias Schoknecht"]
-  spec.email         = ["tobias.schoknecht@barzahlen.de"]
+  spec.email         = ["tobias.schoknecht@gmail.com"]
   spec.description   = %q{Creates views which allow anonymization of database tables.}
   spec.summary       = %q{Gem for creating anonymization views.}
   spec.homepage      = ""
