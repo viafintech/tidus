@@ -38,10 +38,10 @@ module ActiveRecord
       columns = attributes - [options]
 
       raise ArgumentError, "You need to supply at least one attribute" if attributes.empty?
-      raise ArgumentError, "You need to supply a method" if options[:method].blank?
+      raise ArgumentError, "You need to supply a strategie" if options[:strategie].blank?
 
       columns.each do |column|
-        key = "#{options[:method].to_s.camelize}Anonymizer"
+        key = "#{options[:strategie].to_s.camelize}Anonymizer"
 
         begin
           if key.include?('::')
