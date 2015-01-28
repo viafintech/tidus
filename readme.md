@@ -19,15 +19,16 @@ The rules to ensure anonymization can be defined as follows
 
 ### Strategies
 - `:cond`
-    - Replaces values by other values of a specific type in case a condition is met. If no condition is met, the current value is used.
+    - Replaces values by other values of a specific type in case a condition is met. If no condition is met, the current value or a default is used if specified.
     - Options:
-        - `:value`  The value to be used as a replacement
-        - `:type`   The type to which the value should be cast. Default is `text`
-        - `:condition`
+        - `:default`  The default value to be used in case no condition is met. If not set the current column value will be used
+        - `:default_type`   The type to which the default value should be cast. Default is `text`. The type will be ignored if default is nil.
+        - `:conditions`  Array or hash of one or more condition settings
             -  `:column` Name of the column for the condition
-            -  `:value` Value of the column in which case the condition should trigger
+            -  `:value` Value which should be compared to the `:column` value
             -  `:type`  The type to which the column value and the condition value should be cast for comparision. Default is `text`.
-            -  `:comparator`    Infix function with which to compare the values. Default is `=`
+            -  `:comparator`  Infix function with which to compare the values. Default is `=`
+            -  `:result` Value which should be used as a replacement in case the condition is met.
 - `:email`
     -  Replaces the part before the `@` by an MD5 Hash of the value with given length. A hash function is used here to ensure the
     -  Options:

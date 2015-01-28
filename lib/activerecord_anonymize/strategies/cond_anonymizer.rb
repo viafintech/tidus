@@ -6,26 +6,36 @@ module ActiveRecordAnonymize
       when "postgresql"
         name = "#{table_name}.#{column_name}"
 
-        if options[:value].blank?
-          raise "Missing option :value for CondAnonymizer on #{column_name}"
+        type = options[:default_type] || "text"
+
+        if options[:conditions].blank?
+          raise "Missing option :conditions for CondAnonymizer on #{name}"
+        elsif options[:conditions].kind_of?(Array)
+          conditions = options[:conditions]
+        else
+          conditions = [options[:conditions]]
         end
 
-        type = options[:type] || "text"
+        command = "CASE "
 
-        if options[:condition].blank? || options[:condition][:field].blank? ||
-          options[:condition][:value].blank?
-          raise "Missing option :condition for CondAnonymizer on #{column_name}"
+        conditions.each do |cond|
+          raise ":column for condition must be set" if cond[:column].blank?
+          raise ":value for condition must be set" if cond[:value].nil?
+          raise ":result for condition must be set" if cond[:result].nil?
+          cond_column = cond[:column]
+          cond_value  = cond[:value]
+          cond_type   = cond[:type] || "text"
+          comparator  = cond[:comparator] || "="
+          cond_result = cond[:result]
+
+          command += "WHEN ((#{cond_column})::#{cond_type} #{comparator} " +
+                     "'#{cond_value}'::#{cond_type}) THEN '#{cond_result}'::#{type} "
         end
 
-        cond_field = options[:condition][:field]
-        cond_value = options[:condition][:value]
-        cond_type  = options[:condition][:type] || "text"
-        comparator = options[:condition][:comparator] || "="
+        default = "'#{options[:default]}'::#{type}" || name
+        command += "ELSE #{default} END"
 
-
-        return "CASE WHEN ((#{cond_field})::#{cond_type} #{comparator} " +
-               "'#{cond_value}'::#{cond_type}) THEN '#{options[:value]}'::#{type} " +
-               "ELSE #{name} END"
+        return command
       else
         raise "#{self.name} not implemented for #{adapter}"
       end
