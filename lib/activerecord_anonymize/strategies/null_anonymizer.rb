@@ -1,11 +1,10 @@
 module ActiveRecordAnonymize
-  class KeyAnonymizer
+  class NullAnonymizer
     def self.anonymize(table_name, column_name, options = {})
       adapter = ActiveRecord::Base.connection.instance_values["config"][:adapter]
       case adapter
       when "postgresql"
-        return "\"overlay\"((#{table_name}.#{column_name})::text, " +
-               "'XXXXXXXXXXX'::text, 30) AS #{table_name}.#{column_name}"
+        return "NULL::unknown"
       else
         raise "#{self.name} not implemented for #{adapter}"
       end

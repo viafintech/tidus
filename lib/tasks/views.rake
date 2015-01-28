@@ -23,8 +23,8 @@ namespace :db do
 
   			ActiveRecord::Base.connection.execute(
   				"CREATE VIEW #{c.view_name} AS " +
-  				"SELECT #{c.view_columns.join(', ')} " +
-  				"FROM #{c.table_name}"
+  				"(SELECT #{c.view_columns.join(', ')} " +
+  				"FROM #{c.table_name})"
   			)
       end
 		end
