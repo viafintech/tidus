@@ -1,0 +1,52 @@
+# ActiveRecordAnonymize
+
+ActiveRecordAnonymize is a Ruby Gem which works in conjunction with ActiveRecord to automatically generate database views for every model. The purpose of the views is to anonymize the contents of select columns to ensure that no confidential information leave the database while still providing access to the data in general.
+
+## Getting started
+
+1. add the Gem to the Gemfile
+        gem 'activerecord_anonymize'
+2. Require the Gem at any point after ActiveRecord but before loading the models. Rails requires all Gems in the Gemfile by default.
+3. Add your anonymization rules
+4. Execute `rake db:migrate`. The `db:clear_views` and `db:generate_views` tasks are hooked to automatically run every time before and after execution of `db:migrate` or `db:rollback`.
+
+## Anonymization rules
+The rules to ensure anonymization can be defined as follows
+
+        anonymizes :column_name, strategy: <strategy_name>, <additional_options>
+- stragy_name: any of the strategies below
+- additional_options: additional settings in `key: value`notation
+
+### Strategies
+- `:cond`
+    - Replaces values by other values of a specific type in case a condition is met. If no condition is met, the current value is used.
+    - Options:
+        - `:value`  The value to be used as a replacement
+        - `:type`   The type to which the value should be cast. Default is `text`
+        - `:condition`
+            -  `:column` Name of the column for the condition
+            -  `:value` Value of the column in which case the condition should trigger
+            -  `:type`  The type to which the column value and the condition value should be cast for comparision. Default is `text`.
+            -  `:comparator`    Infix function with which to compare the values. Default is `=`
+- `:email`
+    -  Replaces the part before the `@` by an MD5 Hash of the value with given length. A hash function is used here to ensure the
+    -  Options:
+        -  `:length`    Specifies the length of the part which should be kept before the `@`. Default is 15. Maximum with MD5 is 32.
+- `:null`
+    - Replaces any value with `NULL`
+- `:overlay`
+    - Adds an `XXXXXXXXXXX` overlay to part of the string.
+    - Options:
+        - `:start`  Defines the starting point in the value string. (required)
+- `:static`
+    - Similar to the `:null` strategy, this strategy allows defining a specific value with which to replace the column value.
+    - Options:
+        - `:value`  The value used as a replacement in the view
+- `:text`
+    - It replaces any string by a randomized string of equal length minding capital letters. The replacement function is the same for every value in the view but it is randomly generated each time the view is created.
+
+## Database support
+Currently the Gem only contains strategy implementations for PostgreSQL.
+
+## Bugs and Contribution
+For bugs and feature requests open an issue on Github. For code contributions fork the repo, make your changes and create a pull request.
