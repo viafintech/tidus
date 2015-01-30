@@ -22,7 +22,7 @@ The rules to ensure anonymization can be defined as follows
     - Replaces values by other values of a specific type in case a condition is met. If no condition is met, the current value or a default is used if specified.
     - Options:
         - `:default`  The default value to be used in case no condition is met. If not set the current column value will be used
-        - `:default_type`   The type to which the default value should be cast. Default is `text`. The type will be ignored if default is nil.
+        - `:result_type`   The type to which the resulting value should be cast. Default is `text`.
         - `:conditions`  Array or hash of one or more condition settings
             -  `:column` Name of the column for the condition
             -  `:value` Value which should be compared to the `:column` value
@@ -36,9 +36,11 @@ The rules to ensure anonymization can be defined as follows
 - `:null`
     - Replaces any value with `NULL`
 - `:overlay`
-    - Adds an `XXXXXXXXXXX` overlay to part of the string.
+    - Adds an overlay to part of the string.
     - Options:
         - `:start`  Defines the starting point in the value string. (required)
+        - `:length` Defines the length of the overlay.
+        - `:char`   Defines the character which should be used as an overlay. Default is 'X'.
 - `:static`
     - Similar to the `:null` strategy, this strategy allows defining a specific value with which to replace the column value.
     - Options:

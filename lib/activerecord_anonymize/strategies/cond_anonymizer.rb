@@ -6,7 +6,8 @@ module ActiveRecordAnonymize
       when "postgresql"
         name = "#{table_name}.#{column_name}"
 
-        type = options[:default_type] || "text"
+        type = options[:result_type] || "text"
+        default = options[:default].nil? ? "#{name}::#{type}" : "'#{options[:default]}'::#{type}"
 
         if options[:conditions].blank?
           raise "Missing option :conditions for CondAnonymizer on #{name}"
@@ -28,11 +29,10 @@ module ActiveRecordAnonymize
           comparator  = cond[:comparator] || "="
           cond_result = cond[:result]
 
-          command += "WHEN ((#{cond_column})::#{cond_type} #{comparator} " +
+          command += "WHEN ((#{table_name}.#{cond_column})::#{cond_type} #{comparator} " +
                      "'#{cond_value}'::#{cond_type}) THEN '#{cond_result}'::#{type} "
         end
 
-        default = "'#{options[:default]}'::#{type}" || name
         command += "ELSE #{default} END"
 
         return command
