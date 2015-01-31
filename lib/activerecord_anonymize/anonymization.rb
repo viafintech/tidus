@@ -41,15 +41,14 @@ module ActiveRecord
       raise ArgumentError, "You need to supply a strategy" if options[:strategy].blank?
 
       columns.each do |column|
-        key = "#{options[:strategy].to_s.camelize}Anonymizer"
+        key = options[:strategy].to_s.camelize
 
         begin
           if key.include?('::')
             klass = key.constantize
           else
-            klass = "ActiveRecordAnonymize::#{key}"
+            klass = const_get("ActiveRecordAnonymize::#{key}Anonymizer")
           end
-          klass = const_get("ActiveRecordAnonymize::#{key}")
         rescue NameError
           raise ArgumentError, "Unknown anonymizer: '#{key}'"
         end

@@ -35,6 +35,7 @@ GEM
     rspec-expectations (2.14.5)
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.14.6)
+    sqlite3 (1.3.10)
     thread_safe (0.3.4)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
@@ -46,3 +47,4 @@ DEPENDENCIES
   activerecord_anonymize!
   rake (~> 10.0.4)
   rspec (~> 2.14.1)
+  sqlite3 (~> 1.3.10)
