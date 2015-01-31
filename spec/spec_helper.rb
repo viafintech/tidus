@@ -1,5 +1,6 @@
 Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each  { |file| require file }
 Dir["./spec/support/*.rb"].each { |f| require f }
+require 'active_record'
 
 RSpec.configure do |config|
   # Add ':focus' to a test and rspec will only run this test.
