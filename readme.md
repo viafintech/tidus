@@ -53,3 +53,6 @@ Currently the Gem only contains strategy implementations for PostgreSQL.
 
 ## Bugs and Contribution
 For bugs and feature requests open an issue on Github. For code contributions fork the repo, make your changes and create a pull request.
+
+## Extending functionality
+The number of strategies implemented so far is limited. You can however very easily define your own anonymization strategy. There is actually only one requirement: The class containing the strategy has to have an `anonymize` method. By passing the class name as a strategy value to the `:strategy` key, you are telling the anonymization extension on which class to execute said method.
