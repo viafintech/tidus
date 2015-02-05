@@ -1,3 +1,3 @@
-module ActiveRecordAnonymize
+module Tidus
   VERSION = "1.0.0"
 end
