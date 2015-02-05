@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ActiveRecord::Anonymization do
+describe Tidus::Anonymization do
   subject(:klass) { ExampleModel }
 
   before(:each) do
@@ -69,17 +69,17 @@ describe ActiveRecord::Anonymization do
     end
 
     it "raises an exception if the strategy is unknown" do
-      expect { 
+      expect {
         klass.anonymizes :name, :strategy => :unknown
       }.to raise_error("Unknown anonymizer: 'Unknown'")
     end
 
     it "allows the use of a class name string as strategy" do
-      klass.anonymizes :name, :strategy => 'ActiveRecordAnonymize::TestAnonymizer'
+      klass.anonymizes :name, :strategy => 'Tidus::TestAnonymizer'
     end
 
     it "allows the use of a class as strategy" do
-      klass.anonymizes :name, :strategy => ActiveRecordAnonymize::TestAnonymizer
+      klass.anonymizes :name, :strategy => Tidus::TestAnonymizer
     end
 
     it "sets the view columns with their appropriate strategy" do

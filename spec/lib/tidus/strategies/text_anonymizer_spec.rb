@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ActiveRecordAnonymize::StaticAnonymizer do
+describe Tidus::TextAnonymizer do
   context "postgresql" do
     before(:each) do
       ActiveRecord::Base.stub_chain(:connection, :instance_values)
@@ -9,14 +9,11 @@ describe ActiveRecordAnonymize::StaticAnonymizer do
                         } })
     end
 
-    it "raises an exception if the value setting is missing" do
-      expect {
-        described_class.anonymize("foo", "bar", {})
-      }.to raise_error("Missing option :value for StaticAnonymizer on foo.bar")
-    end
-
-    it "returns the value that was provided" do
-      described_class.anonymize("foo", "bar", { :value => "cookie"}).should == "'cookie'"
+    it "returns an SQL statement with a randomly generated mapping" do
+      result = described_class.anonymize('foo', 'bar')
+      base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZCßüäöÜÄÖ"
+      result.should match(
+        /translate\(\(foo\.bar\)::text, '#{base}'::text, '[A-Za-z0-9ÄÖÜäöü]{60}'::text\)/)
     end
   end
 

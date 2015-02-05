@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ActiveRecordAnonymize::EmailAnonymizer do
+describe Tidus::EmailAnonymizer do
   context "postgresql" do
     before(:each) do
       ActiveRecord::Base.stub_chain(:connection, :instance_values)

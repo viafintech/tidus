@@ -1,4 +1,4 @@
-module ActiveRecordAnonymize
+module Tidus
   class CondAnonymizer
     def self.anonymize(table_name, column_name, options = {})
       adapter = ActiveRecord::Base.connection.instance_values["config"][:adapter]

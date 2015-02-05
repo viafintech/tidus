@@ -1,4 +1,4 @@
-module ActiveRecord
+module Tidus
 	module Anonymization
     def view_postfix
       @view_postfix || "anonymized"
@@ -60,4 +60,4 @@ module ActiveRecord
 	end
 end
 
-ActiveRecord::Base.extend ActiveRecord::Anonymization
+ActiveRecord::Base.extend Tidus::Anonymization

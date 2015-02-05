@@ -1,4 +1,4 @@
-module ActiveRecordAnonymize
+module Tidus
   class TextAnonymizer
     def self.anonymize(table_name, column_name, options = {})
       base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZCßüäöÜÄÖ"

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ActiveRecordAnonymize::OverlayAnonymizer do
+describe Tidus::OverlayAnonymizer do
   context "postgresql" do
     before(:each) do
       ActiveRecord::Base.stub_chain(:connection, :instance_values)

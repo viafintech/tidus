@@ -1,12 +1,12 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'activerecord_anonymize/version'
+require 'tidus/version'
 
 Gem::Specification.new do |spec|
   # For explanations see http://docs.rubygems.org/read/chapter/20
-  spec.name          = "activerecord_anonymize"
-  spec.version       = ActiveRecordAnonymize::VERSION
+  spec.name          = "tidus"
+  spec.version       = Tidus::VERSION
   spec.authors       = ["Tobias Schoknecht"]
   spec.email         = ["tobias.schoknecht@gmail.com"]
   spec.description   = %q{Creates views which allow anonymization of database tables.}
