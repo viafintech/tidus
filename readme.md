@@ -1,11 +1,11 @@
-# ActiveRecordAnonymize
+# Tidus
 
-ActiveRecordAnonymize is a Ruby Gem which works in conjunction with ActiveRecord to automatically generate database views for every model. The purpose of the views is to anonymize the contents of select columns to ensure that no confidential information leave the database while still providing access to the data in general.
+Tidus is a Ruby Gem which works in conjunction with ActiveRecord to automatically generate database views for every model. The purpose of the views is to anonymize the contents of select columns to ensure that no confidential information leave the database while still providing access to the data in general.
 
 ## Getting started
 
 1. add the Gem to the Gemfile
-        gem 'activerecord_anonymize'
+        gem 'tidus'
 2. Require the Gem at any point after ActiveRecord but before loading the models. Rails requires all Gems in the Gemfile by default.
 3. Add your anonymization rules
 4. Execute `rake db:migrate`. The `db:clear_views` and `db:generate_views` tasks are hooked to automatically run every time before and after execution of `db:migrate` or `db:rollback`.
@@ -56,3 +56,6 @@ For bugs and feature requests open an issue on Github. For code contributions fo
 
 ## Extending functionality
 The number of strategies implemented so far is limited. You can however very easily define your own anonymization strategy. There is actually only one requirement: The class containing the strategy has to have an `anonymize` method. By passing the class name as a strategy value to the `:strategy` key, you are telling the anonymization extension on which class to execute said method.
+
+### License
+[LICENSE](LICENSE)
