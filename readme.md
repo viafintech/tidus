@@ -5,7 +5,9 @@ Tidus is a Ruby Gem which works in conjunction with ActiveRecord to automaticall
 ## Getting started
 
 1. add the Gem to the Gemfile
+
         gem 'tidus'
+
 2. Require the Gem at any point after ActiveRecord but before loading the models. Rails requires all Gems in the Gemfile by default.
 3. Add your anonymization rules
 4. Execute `rake db:migrate`. The `db:clear_views` and `db:generate_views` tasks are hooked to automatically run every time before and after execution of `db:migrate` or `db:rollback`.
@@ -39,7 +41,7 @@ The rules to ensure anonymization can be defined as follows
     - Adds an overlay to part of the string.
     - Options:
         - `:start`  Defines the starting point in the value string. (required)
-        - `:length` Defines the length of the overlay.
+        - `:length` Defines the length of the overlay. (required)
         - `:char`   Defines the character which should be used as an overlay. Default is 'X'.
 - `:static`
     - Similar to the `:null` strategy, this strategy allows defining a specific value with which to replace the column value.
