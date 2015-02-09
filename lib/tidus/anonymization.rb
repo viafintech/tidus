@@ -47,7 +47,7 @@ module Tidus
           if key.include?('::')
             klass = key.constantize
           else
-            klass = const_get("ActiveRecordAnonymize::#{key}Anonymizer")
+            klass = const_get("Tidus::#{key}Anonymizer")
           end
         rescue NameError
           raise ArgumentError, "Unknown anonymizer: '#{key}'"
