@@ -1,26 +1,26 @@
 PATH
   remote: .
   specs:
-    tidus (1.0.0)
+    tidus (1.0.1)
       activerecord (>= 3.2)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (4.1.9)
-      activesupport (= 4.1.9)
+    activemodel (4.2.0)
+      activesupport (= 4.2.0)
       builder (~> 3.1)
-    activerecord (4.1.9)
-      activemodel (= 4.1.9)
-      activesupport (= 4.1.9)
-      arel (~> 5.0.0)
-    activesupport (4.1.9)
-      i18n (~> 0.6, >= 0.6.9)
+    activerecord (4.2.0)
+      activemodel (= 4.2.0)
+      activesupport (= 4.2.0)
+      arel (~> 6.0)
+    activesupport (4.2.0)
+      i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
-      thread_safe (~> 0.1)
+      thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    arel (5.0.1.20140414130214)
+    arel (6.0.0)
     builder (3.2.2)
     diff-lcs (1.2.5)
     i18n (0.7.0)
