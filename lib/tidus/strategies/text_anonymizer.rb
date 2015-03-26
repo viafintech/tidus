@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Tidus
   class TextAnonymizer
     def self.anonymize(table_name, column_name, options = {})

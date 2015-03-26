@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Tidus
 	module Anonymization
     def view_postfix
