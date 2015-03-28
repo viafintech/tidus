@@ -2,13 +2,9 @@ require "rake"
 require "active_record"
 
 require "tidus/version"
+require "tidus/query"
 require "tidus/anonymization"
-require "tidus/strategies/cond_anonymizer.rb"
-require "tidus/strategies/email_anonymizer.rb"
-require "tidus/strategies/null_anonymizer.rb"
-require "tidus/strategies/overlay_anonymizer.rb"
-require "tidus/strategies/static_anonymizer.rb"
-require "tidus/strategies/text_anonymizer.rb"
+Dir["#{File.dirname(__FILE__)}/tidus/strategies/**/*.rb"].each { |f| require f }
 
 load "active_record/railties/databases.rake"
 load "tasks/views.rake"

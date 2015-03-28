@@ -20,11 +20,10 @@ describe "database view clearing rake task" do
 
       another_table = Object.new
       another_table.should_receive(:table_name).exactly(2).times.and_return("another_table")
-      another_table.should_receive(:view_name).exactly(2).times.and_return("another_table_anonymized")
+      another_table.should_receive(:view_name).and_return("another_table_anonymized")
+      another_table.should_receive(:clear_views)
 
       ActiveRecord::Base.should_receive(:descendants).and_return([schema_migrations, another_table])
-      ActiveRecord::Base.should_receive(:connection).and_return(connection = Object.new)
-      connection.should_receive(:execute).with("DROP VIEW IF EXISTS another_table_anonymized")
       @rake[@rake_task_name].invoke
     end
   end
@@ -43,20 +42,17 @@ describe "database view clearing rake task" do
       nonexistent.should_receive(:table_name).exactly(2).times.and_return("nonexistent")
 
       another_table = Object.new
-      another_table.should_receive(:table_name).exactly(4).times.and_return("another_table")
-      another_table.should_receive(:view_name).exactly(2).times.and_return("another_table_anonymized")
-      another_table.should_receive(:view_columns).and_return(["a AS a, b AS b"])
+      another_table.should_receive(:table_name).exactly(3).times.and_return("another_table")
+      another_table.should_receive(:view_name).and_return("another_table_anonymized")
+      another_table.should_receive(:create_views)
 
       ActiveRecord::Base.should_receive(:descendants)
                         .and_return([schema_migrations, another_table, nonexistent])
       connection = Object.new
-      ActiveRecord::Base.should_receive(:connection).exactly(3).times
+      ActiveRecord::Base.should_receive(:connection).exactly(2).times
                         .and_return(connection)
       connection.should_receive(:table_exists?).with("nonexistent").and_return(false)
       connection.should_receive(:table_exists?).with("another_table").and_return(true)
-      connection.should_receive(:execute)
-                .with("CREATE VIEW another_table_anonymized " +
-                      "AS (SELECT a AS a, b AS b FROM another_table)")
       @rake[@rake_task_name].invoke
     end
   end

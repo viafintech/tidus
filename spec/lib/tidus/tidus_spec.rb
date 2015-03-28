@@ -61,11 +61,11 @@ describe Tidus::Anonymization do
 
   context "#anonymizes" do
     it "raises an exception if no attributes where provided" do
-      expect { klass.anonymizes }.to raise_error("You need to supply at least one attribute")
+      expect { klass.anonymizes }.to raise_error("Must have at least one attribute")
     end
 
     it "raises an exception if no strategy was provided" do
-      expect { klass.anonymizes :name }.to raise_error("You need to supply a strategy")
+      expect { klass.anonymizes :name }.to raise_error("Must have a strategy")
     end
 
     it "raises an exception if the strategy is unknown" do

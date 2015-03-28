@@ -1,5 +1,9 @@
+# encoding: utf-8
+
 module Tidus
 	module Anonymization
+    include Tidus::Query
+
     def view_postfix
       @view_postfix || "anonymized"
     end
@@ -37,8 +41,8 @@ module Tidus
       options = attributes.extract_options!.dup
       columns = attributes - [options]
 
-      raise ArgumentError, "You need to supply at least one attribute" if attributes.empty?
-      raise ArgumentError, "You need to supply a strategy" if options[:strategy].blank?
+      raise ArgumentError, "Must have at least one attribute" if attributes.empty?
+      raise ArgumentError, "Must have a strategy" if options[:strategy].blank?
 
       columns.each do |column|
         key = options[:strategy].to_s.camelize

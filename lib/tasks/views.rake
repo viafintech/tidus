@@ -6,9 +6,7 @@ namespace :db do
       next if c.table_name == "schema_migrations"
       puts "Clearing view '#{c.view_name}' for table '#{c.table_name}'"
 
-      ActiveRecord::Base.connection.execute(
-        "DROP VIEW IF EXISTS #{c.view_name}"
-      )
+      c.clear_views
     end
   end
 
@@ -21,11 +19,7 @@ namespace :db do
       if ActiveRecord::Base.connection.table_exists? c.table_name
         puts "Generating view '#{c.view_name}' for table '#{c.table_name}'"
 
-        ActiveRecord::Base.connection.execute(
-          "CREATE VIEW #{c.view_name} AS " +
-          "(SELECT #{c.view_columns.join(', ')} " +
-          "FROM #{c.table_name})"
-        )
+        c.create_views
       end
     end
   end
