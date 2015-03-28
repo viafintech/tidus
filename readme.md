@@ -1,5 +1,7 @@
 # Tidus
 
+![Travis Build state](https://api.travis-ci.org/Barzahlen/tidus.svg)
+
 Tidus is a Ruby Gem which works in conjunction with ActiveRecord to automatically generate database views for every model. The purpose of the views is to anonymize the contents of select columns to ensure that no confidential information leave the database while still providing access to the data in general.
 
 ## Getting started
