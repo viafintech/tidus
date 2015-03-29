@@ -21,7 +21,7 @@ describe "database view clearing rake task" do
       another_table = Object.new
       another_table.should_receive(:table_name).exactly(2).times.and_return("another_table")
       another_table.should_receive(:view_name).and_return("another_table_anonymized")
-      another_table.should_receive(:clear_views)
+      another_table.should_receive(:clear_view)
 
       ActiveRecord::Base.should_receive(:descendants).and_return([schema_migrations, another_table])
       @rake[@rake_task_name].invoke
@@ -44,7 +44,7 @@ describe "database view clearing rake task" do
       another_table = Object.new
       another_table.should_receive(:table_name).exactly(3).times.and_return("another_table")
       another_table.should_receive(:view_name).and_return("another_table_anonymized")
-      another_table.should_receive(:create_views)
+      another_table.should_receive(:create_view)
 
       ActiveRecord::Base.should_receive(:descendants)
                         .and_return([schema_migrations, another_table, nonexistent])

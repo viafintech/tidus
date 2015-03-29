@@ -6,7 +6,7 @@ namespace :db do
       next if c.table_name == "schema_migrations"
       puts "Clearing view '#{c.view_name}' for table '#{c.table_name}'"
 
-      c.clear_views
+      c.clear_view
     end
   end
 
@@ -19,7 +19,7 @@ namespace :db do
       if ActiveRecord::Base.connection.table_exists? c.table_name
         puts "Generating view '#{c.view_name}' for table '#{c.table_name}'"
 
-        c.create_views
+        c.create_view
       end
     end
   end
