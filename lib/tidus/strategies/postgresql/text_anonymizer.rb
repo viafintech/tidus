@@ -9,15 +9,16 @@ module Tidus
 
       private
         def self.generate_mapping(base)
-          result = ""
-          base.split("").each do |letter|
+          upper = ("A".."Z").to_a
+          lower = ("a".."z").to_a
+          result = base.split("").map do |letter|
             if letter == letter.upcase
-              result += ("A".."Z").to_a.shuffle.first
+              upper.sample
             else
-              result += ("a".."z").to_a.shuffle.first
+              lower.sample
             end
           end
-          result
+          result.join("")
         end
     end
   end
