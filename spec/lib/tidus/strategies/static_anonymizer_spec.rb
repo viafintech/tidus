@@ -10,6 +10,12 @@ describe Tidus::StaticAnonymizer do
   end
 
   it "returns the value that was provided" do
-    described_class.anonymize("foo", "bar", { :value => "cookie"}).should == "'cookie'"
+    described_class.anonymize("foo", "bar", { :value => "cookie" }).should == "'cookie'::unknown"
+  end
+
+  it "returns the value with a specific type" do
+    described_class.anonymize(
+      "foo", "bar", { :value => "cookie", :type => "text" }
+    ).should == "'cookie'::text"
   end
 end
