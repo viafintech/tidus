@@ -61,11 +61,11 @@ describe Tidus::Anonymization do
 
   context "#anonymizes" do
     it "raises an exception if no attributes where provided" do
-      expect { klass.anonymizes }.to raise_error("You need to supply at least one attribute")
+      expect { klass.anonymizes }.to raise_error("Must have at least one attribute")
     end
 
     it "raises an exception if no strategy was provided" do
-      expect { klass.anonymizes :name }.to raise_error("You need to supply a strategy")
+      expect { klass.anonymizes :name }.to raise_error("Must have a strategy")
     end
 
     it "raises an exception if the strategy is unknown" do
@@ -89,6 +89,46 @@ describe Tidus::Anonymization do
         "'test'::text AS name",
         "example_models.key AS key"
       ]
+    end
+  end
+
+  context "query" do
+    before(:each) do
+      @postgres_config = { "config" => { :adapter => "postgresql" } }
+      @create_query = "CREATE VIEW example_models_anonymized AS " +
+        "SELECT example_models.id AS id, " +
+               "'test'::text AS name, " +
+               "example_models.key AS key " +
+        "FROM example_models"
+      @clear_query = "DROP VIEW IF EXISTS example_models_anonymized"
+    end
+
+    context "#create_query" do
+      it "builds the query to create a view" do
+        klass.create_query.should == @create_query
+      end
+    end
+
+    context "#clear_query" do
+      it "builds the query to clear a view" do
+        klass.clear_query.should == @clear_query
+      end
+    end
+
+    context "#create_view" do
+      it "executes the query to create a view" do
+        klass.connection.should_receive(:execute)
+             .with(klass.create_query)
+        klass.create_view
+      end
+    end
+
+    context "#clear_view" do
+      it "executes the query to clear a view" do
+        klass.connection.should_receive(:execute)
+             .with(klass.clear_query)
+        klass.clear_view
+      end
     end
   end
 end

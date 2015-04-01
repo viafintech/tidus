@@ -48,7 +48,8 @@ The rules to ensure anonymization can be defined as follows
 - `:static`
     - Similar to the `:null` strategy, this strategy allows defining a specific value with which to replace the column value.
     - Options:
-        - `:value`  The value used as a replacement in the view
+        - `:value`  The value used as a replacement in the view. (required)
+        - `:type`   The type to which the returned value should be cast. Default is `text`
 - `:text`
     - It replaces any string by a randomized string of equal length minding capital letters. The replacement function is the same for every value in the view but it is randomly generated each time the view is created.
 
@@ -56,6 +57,13 @@ The rules to ensure anonymization can be defined as follows
 Note: to provide your own anonymization strategy you can also provide a class name for the strategy, e.g. `strategy: Tidus::OverlayAnonymizer`. It is expected though that the class is in a submodule. It is recommended to use `Tidus` as module name for better association of the purpose of the class.
 
 ## Database support
+
+|            | cond | email | null | overlay | static | text |
+|------------|------|-------|------|---------|--------|------|
+| PostgreSQL |  √   |  √    |  √   |  √      |  √     |  √   |
+| SQLite3    |  x   |  x    |  √   |  x      |  x     |  x   |
+| MySQL      |  x   |  x    |  x   |  x      |  x     |  x   |
+
 Currently the Gem only contains strategy implementations for PostgreSQL.
 
 ## Bugs and Contribution
