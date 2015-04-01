@@ -8,6 +8,10 @@ module Tidus
       @skip_anonymization = true
     end
 
+    def skip_anonymization?
+      @skip_anonymization
+    end
+
     def view_postfix
       @view_postfix || "anonymized"
     end

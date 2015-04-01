@@ -14,7 +14,7 @@ namespace :db do
   task :generate_views do
     Rails.application.eager_load! if defined?(Rails)
     ActiveRecord::Base.descendants.each do |c|
-      next if c.table_name == "schema_migrations" || c.skip_anonymization
+      next if c.table_name == "schema_migrations" || c.skip_anonymization?
 
       if ActiveRecord::Base.connection.table_exists? c.table_name
         puts "Generating view '#{c.view_name}' for table '#{c.table_name}'"
