@@ -103,15 +103,6 @@ describe Tidus::Anonymization do
       @clear_query = "DROP VIEW IF EXISTS example_models_anonymized"
     end
 
-    context "#adapter" do
-      it "returns the configured adapter" do
-        klass.adapter.should == "sqlite3"
-        klass.connection.should_receive(:instance_values)
-             .and_return(@postgres_config)
-        klass.adapter.should == "postgresql"
-      end
-    end
-
     context "#create_query" do
       it "builds the query to create a view" do
         klass.create_query.should == @create_query
@@ -124,46 +115,8 @@ describe Tidus::Anonymization do
       end
     end
 
-    context "grant_queries" do
-      after(:each) do
-        Tidus::Settings.access_roles = []
-      end
-
-      it "returns an empty array if the adapter is sqlite3" do
-        klass.connection.instance_values["config"][:adapter].should == "sqlite3"
-        klass.grant_queries.should == []
-      end
-
-      it "returns an empty array if the adapter is not sqlite3 and no roles are set" do
-        klass.connection.should_receive(:instance_values)
-             .and_return(@postgres_config)
-        klass.grant_queries.should == []
-      end
-
-      it "returns an array of grant statements if roles are set" do
-        Tidus::Settings.access_roles = ["cookie", "blub"]
-        klass.connection.should_receive(:instance_values)
-             .and_return(@postgres_config)
-        klass.grant_queries.should == [
-          "GRANT SELECT ON example_models_anonymized TO cookie",
-          "GRANT SELECT ON example_models_anonymized TO blub"
-        ]
-      end
-    end
-
     context "#create_view" do
       it "executes the query to create a view" do
-        klass.connection.should_receive(:execute)
-             .with(klass.create_query)
-        klass.create_view
-      end
-
-      it "additionally executes access grant queries" do
-        Tidus::Settings.access_roles = ["cookie", "blub"]
-        klass.grant_queries.each do |q|
-          klass.connection.should_receive(:execute)
-               .with(q)
-        end
         klass.connection.should_receive(:execute)
              .with(klass.create_query)
         klass.create_view
