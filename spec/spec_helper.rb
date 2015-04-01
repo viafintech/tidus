@@ -9,6 +9,7 @@ RSpec.configure do |config|
   # The following 3 lines make this possible:
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
+  config.treat_symbols_as_metadata_keys_with_true_values = true
 
   config.mock_with :rspec do |c|
     c.syntax = [:should, :expect]

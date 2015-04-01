@@ -1,8 +1,12 @@
 # encoding: utf-8
 
 module Tidus
-	module Anonymization
+  module Anonymization
     include Tidus::Query
+
+    def skip_anonymization
+      @skip_anonymization = true
+    end
 
     def view_postfix
       @view_postfix || "anonymized"

@@ -12,6 +12,14 @@ describe Tidus::Anonymization do
     klass.view_name = nil
   end
 
+  context "#skip_anonymization" do
+    it "sets the skip_anonymization value" do
+      klass.instance_variable_get(:@skip_anonymization).should == nil
+      klass.skip_anonymization
+      klass.instance_variable_get(:@skip_anonymization).should == true
+    end
+  end
+
   context "#view_postfix" do
     it "returns the default view_postfix" do
       klass.view_postfix.should == "anonymized"

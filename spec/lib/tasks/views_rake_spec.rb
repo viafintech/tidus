@@ -32,7 +32,7 @@ describe "database view clearing rake task" do
     before(:each) do
       @rake_task_name = "db:generate_views"
       Rake::Task[@rake_task_name].reenable
-    end 
+    end
 
     it "executes the rake task" do
       schema_migrations = Object.new
@@ -40,14 +40,21 @@ describe "database view clearing rake task" do
 
       nonexistent = Object.new
       nonexistent.should_receive(:table_name).exactly(2).times.and_return("nonexistent")
+      nonexistent.should_receive(:skip_anonymization)
+
+      skip_anonymization = Object.new
+      skip_anonymization.should_receive(:table_name).and_return("skip")
+      skip_anonymization.should_receive(:skip_anonymization).and_return(true)
 
       another_table = Object.new
       another_table.should_receive(:table_name).exactly(3).times.and_return("another_table")
       another_table.should_receive(:view_name).and_return("another_table_anonymized")
       another_table.should_receive(:create_view)
+      another_table.should_receive(:skip_anonymization)
 
       ActiveRecord::Base.should_receive(:descendants)
-                        .and_return([schema_migrations, another_table, nonexistent])
+                        .and_return([schema_migrations, another_table,
+                                     nonexistent, skip_anonymization])
       connection = Object.new
       ActiveRecord::Base.should_receive(:connection).exactly(2).times
                         .and_return(connection)
