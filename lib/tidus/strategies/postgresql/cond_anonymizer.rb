@@ -4,6 +4,7 @@ module Tidus
       def self.anonymize(table_name, column_name, options = {})
         name = "#{table_name}.#{column_name}"
 
+        # If options is edited on a deeper level .dup has to be replaced by marshal dump/load
         options = options.dup
         options[:result_type] ||= "text"
         type = options[:result_type]
