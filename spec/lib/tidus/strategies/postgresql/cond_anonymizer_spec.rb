@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Tidus::Postgresql::CondAnonymizer do    
+describe Tidus::Postgresql::CondAnonymizer do
   it "raises an exception if the conditions setting is missing" do
     expect {
       described_class.anonymize("foo", "bar", {})
@@ -37,6 +37,14 @@ describe Tidus::Postgresql::CondAnonymizer do
           described_class.anonymize("foo", "bar", @options)
         }.to raise_error(":#{param} for condition must be set")
       end
+    end
+
+    it 'raises an exception if both default and default_strategy are specified' do
+      @options[:default] = "some value"
+      @options[:default_strategy] = :email
+      expect {
+        described_class.anonymize("foo", "bar", @options)
+      }.to raise_error("CondAnonymizer: Only one of default and default_strategy can be used")
     end
 
     it "generates a string with each conditions as a case" do
@@ -89,6 +97,37 @@ describe Tidus::Postgresql::CondAnonymizer do
                        "THEN '123'::text " +
                        "WHEN ((foo.baz)::text = 'keks'::text) " +
                        "THEN '567'::text ELSE foo.bar::text END"
+    end
+
+    context "with default_strategy" do
+      before(:each) do
+        @options = {
+          conditions: [{
+            column: "bar",
+            value:  "cookie",
+            result: "123"
+          }],
+          default_strategy: :email
+        }
+      end
+
+      it "uses the specified strategy if conditions are not met" do
+        result = described_class.anonymize("foo", "bar", @options)
+        expect(result).to eq "CASE WHEN ((foo.bar)::text = 'cookie'::text) " +
+                             "THEN '123'::text " +
+                             "ELSE CASE WHEN ((foo.bar)::text ~~ '%@%'::text) " +
+                               "THEN (((\"left\"(md5((foo.bar)::text), 15) || '@'::text) || " +
+                                 "split_part((foo.bar)::text, '@'::text, 2)))::character varying" +
+                               " ELSE foo.bar END " +
+                             "END"
+      end
+
+      it "raises an exception if the specified default_strategy is not implemented" do
+        @options[:default_strategy] = :foobar
+        expect {
+          described_class.anonymize("foo", "bar", @options)
+        }.to raise_error("default_strategy 'foobar' not implemented for Postgresql")
+      end
     end
   end
 end

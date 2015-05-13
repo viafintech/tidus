@@ -25,7 +25,8 @@ The rules to ensure anonymization can be defined as follows
 - `:cond`
     - Replaces values by other values of a specific type in case a condition is met. If no condition is met, the current value or a default is used if specified.
     - Options:
-        - `:default`  The default value to be used in case no condition is met. If not set the current column value will be used
+        - `:default`  The default value to be used in case no condition is met. If not set the current column value will be used.
+        - `:default_strategy` The default strategy to be used in case no condition is met (alternative to `:default`). Strategy options are not supported at the moment.
         - `:result_type`   The type to which the resulting value should be cast. Default is `text`.
         - `:conditions`  Array or hash of one or more condition settings
             -  `:column` Name of the column for the condition
