@@ -9,6 +9,10 @@ module Tidus
     end
 
     def create_view
+      # Make sure we have up-to-date column information in case a column was changed
+      # in a migration directly before.
+      reset_column_information
+
       connection.execute(create_query)
     end
 
