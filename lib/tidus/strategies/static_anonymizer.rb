@@ -10,5 +10,3 @@ module Tidus
     end
   end
 end
-
-

@@ -4,5 +4,3 @@ module Tidus
   class EmailAnonymizer < Tidus::BaseSelector
   end
 end
-
-
