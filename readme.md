@@ -53,17 +53,22 @@ The rules to ensure anonymization can be defined as follows
         - `:type`   The type to which the returned value should be cast. Default is `text`
 - `:text`
     - It replaces any string by a randomized string of equal length minding capital letters. The replacement function is the same for every value in the view but it is randomly generated each time the view is created.
+- `:regex_replace`
+    - This strategy allows replacing string matching a pattern with another string.
+    - Options:
+        - `:pattern`    The regular expression pattern which will be replaced. (required)
+        - `:replacement`    The replacement to the pattern. Uses an empty string if none given.
 
 
 Note: to provide your own anonymization strategy you can also provide a class name for the strategy, e.g. `strategy: Tidus::OverlayAnonymizer`. It is expected though that the class is in a submodule. It is recommended to use `Tidus` as module name for better association of the purpose of the class.
 
 ## Database support
 
-|            | cond | email | null | overlay | static | text |
-|------------|------|-------|------|---------|--------|------|
-| PostgreSQL |  √   |  √    |  √   |  √      |  √     |  √   |
-| SQLite3    |  x   |  x    |  √   |  x      |  x     |  x   |
-| MySQL      |  x   |  x    |  x   |  x      |  x     |  x   |
+|            | cond | email | null | overlay | static | text | replace |
+|------------|------|-------|------|---------|--------|------|---------|
+| PostgreSQL |  √   |  √    |  √   |  √      |  √     |  √   |    √    |
+| SQLite3    |  x   |  x    |  √   |  x      |  x     |  x   |    x    |
+| MySQL      |  x   |  x    |  x   |  x      |  x     |  x   |    x    |
 
 Currently the Gem only contains strategy implementations for PostgreSQL.
 
