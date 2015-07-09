@@ -58,17 +58,26 @@ The rules to ensure anonymization can be defined as follows
     - Options:
         - `:pattern`    The regular expression pattern which will be replaced. (required)
         - `:replacement`    The replacement to the pattern. Uses an empty string if none given.
+- `:remove_json_keys`
+    - This strategy allows removing top-level keys from JSON objects.
+    - Options:
+        - `:keys`   An array of keys on the top level which should be removed. (required)
 
 
 Note: to provide your own anonymization strategy you can also provide a class name for the strategy, e.g. `strategy: Tidus::OverlayAnonymizer`. It is expected though that the class is in a submodule. It is recommended to use `Tidus` as module name for better association of the purpose of the class.
 
 ## Database support
 
-|            | cond | email | null | overlay | static | text | replace |
-|------------|------|-------|------|---------|--------|------|---------|
-| PostgreSQL |  √   |  √    |  √   |  √      |  √     |  √   |    √    |
-| SQLite3    |  x   |  x    |  √   |  x      |  x     |  x   |    x    |
-| MySQL      |  x   |  x    |  x   |  x      |  x     |  x   |    x    |
+|                  | PostgreSQL | SQLite3 | MySQL |
+|------------------|------------|---------|-------|
+| cond             |      √     |    x    |   x   |
+| email            |      √     |    x    |   x   |
+| null             |      √     |    √    |   x   |
+| overlay          |      √     |    x    |   x   |
+| static           |      √     |    x    |   x   |
+| text             |      √     |    x    |   x   |
+| replace          |      √     |    x    |   x   |
+| remove_json_keys |      √     |    x    |   x   |
 
 Currently the Gem only contains strategy implementations for PostgreSQL.
 
