@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tidus (1.0.6.pre.dev)
+    tidus (1.0.7)
       activerecord (>= 3.2)
 
 GEM
