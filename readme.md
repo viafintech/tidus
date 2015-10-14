@@ -35,7 +35,7 @@ The rules to ensure anonymization can be defined as follows
             -  `:comparator`  Infix function with which to compare the values. Default is `=`
             -  `:result` Value which should be used as a replacement in case the condition is met.
 - `:email`
-    -  Replaces the part before the `@` by an MD5 Hash of the value with given length. A hash function is used here to ensure the
+    -  Replaces the part before the `@` by an MD5 Hash of the value with the given length. A hash function is used to have anonymization while allowing to find out whether two addresses are the same.
     -  Options:
         -  `:length`    Specifies the length of the part which should be kept before the `@`. Default is 15. Maximum with MD5 is 32.
 - `:null`
@@ -65,6 +65,10 @@ The rules to ensure anonymization can be defined as follows
 
 
 Note: to provide your own anonymization strategy you can also provide a class name for the strategy, e.g. `strategy: Tidus::OverlayAnonymizer`. It is expected though that the class is in a submodule. It is recommended to use `Tidus` as module name for better association of the purpose of the class.
+
+## Other options
+
+* `skip_anonymization` - Don't create an anonymized view for the model (by default tidus creates an anonymized view even if no fields are anonymized). Add this to the model instead of using `anonymizes` strategies.
 
 ## Database support
 
