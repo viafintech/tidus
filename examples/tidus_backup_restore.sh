@@ -5,9 +5,6 @@
 
 # Dumps/Restores databases using the _anonymized views for tables only, except for the schema_migrations table.
 
-# Usage:
-# 
-
 ### Core Functions
 
 # Checks if the specified folder exists
