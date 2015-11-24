@@ -23,7 +23,7 @@ describe "database view clearing rake task" do
       another_table.should_receive(:view_name).and_return("another_table_anonymized")
       another_table.should_receive(:clear_view)
 
-      ActiveRecord::Base.should_receive(:descendants).and_return([schema_migrations, another_table])
+      ActiveRecord::Base.should_receive(:subclasses).and_return([schema_migrations, another_table])
       @rake[@rake_task_name].invoke
     end
   end
@@ -52,7 +52,7 @@ describe "database view clearing rake task" do
       another_table.should_receive(:create_view)
       another_table.should_receive(:skip_anonymization?)
 
-      ActiveRecord::Base.should_receive(:descendants)
+      ActiveRecord::Base.should_receive(:subclasses)
                         .and_return([schema_migrations, another_table,
                                      nonexistent, skip_anonymization])
       connection = Object.new
