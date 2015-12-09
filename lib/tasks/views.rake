@@ -25,13 +25,3 @@ namespace :db do
   end
 end
 
-Rake::Task["db:migrate"].enhance ["db:clear_views"]
-Rake::Task["db:rollback"].enhance ["db:clear_views"]
-
-Rake::Task["db:migrate"].enhance do
-  Rake::Task["db:generate_views"].invoke
-end
-
-Rake::Task["db:rollback"].enhance do
-  Rake::Task["db:generate_views"].invoke
-end
