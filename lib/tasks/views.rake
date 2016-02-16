@@ -1,6 +1,6 @@
 namespace :db do
   desc "Clears all the views which are currently existing"
-  task :clear_views do
+  task clear_views: :environment do
     Rails.application.eager_load! if defined?(Rails)
     ActiveRecord::Base.subclasses.each do |c|
       next if c.table_name == "schema_migrations"
@@ -11,7 +11,7 @@ namespace :db do
   end
 
   desc "Generates all the views for the models"
-  task :generate_views do
+  task generate_views: :environment do
     Rails.application.eager_load! if defined?(Rails)
     ActiveRecord::Base.subclasses.each do |c|
       next if c.table_name == "schema_migrations" || c.skip_anonymization?
@@ -24,4 +24,3 @@ namespace :db do
     end
   end
 end
-
