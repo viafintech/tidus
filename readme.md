@@ -18,7 +18,7 @@ Tidus is a Ruby Gem which works in conjunction with ActiveRecord to automaticall
 The rules to ensure anonymization can be defined as follows
 
         anonymizes :column_name, strategy: <strategy_name>, <additional_options>
-- stragy_name: any of the strategies below
+- strategy_name: any of the strategies below
 - additional_options: additional settings in `key: value`notation
 
 ### Strategies
