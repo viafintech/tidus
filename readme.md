@@ -88,16 +88,15 @@ Currently the Gem only contains strategy implementations for PostgreSQL.
 ## Backup and Restore
 
 You can use the bash example script located in examples to backup and restore databases prepared with tidus easily. `tidus_backup_restore.sh` can be called with any parameter other than `-d|-r|--dump|--restore` to get help for it's usage. The `tidus_seq_rst.sql` file is necessary for restores since it's will reset all sequences after restore for you - it's not necessary for backups only.
+You also need the `tidus_credentials.conf` with the IP/DNS, User and Password of the Dump and Restore users. If you use `tidus_backup_restore.sh` on separate machines for backup and restore, you can split up the credentials file and only provide the information necessary to backup and restore.
 
 ### Basic usage
 
-Before dumping or restoring you have to manually edit the `tidus_backup_restore.sh` file and search for all occurences of PGSERVER, PGPORT, PGUSER and PGPASSWD and set them for your environment. Those parameters are not exposed into the commandline due to security considerations. Also check the `dump_it` and `restore_it` functions and add the databases you want to dump or restore as well as the database names in your staging environment and the staging user which will get the permissions after restore.
+Before dumping or restoring you have to provide the `tidus_credentials.conf` file with all the informations needed for dumping and restoring. Those parameters are not exposed into the commandline due to security considerations. Also manually edit the `tidus_backup_restore.sh` and check the `dump_it` and `restore_it` functions and add the databases you want to dump or restore as well as the database names in your staging environment and the staging user which will get the permissions after restore.
 
-- `./tidus_backup_restore.sh -d /path/to/the/dumps/folder`
-  - Set the PGSERVER, PGPORT, PGUSER and PGPASSWD parameters in the `dump_db` function first!
+- `./tidus_backup_restore.sh /path/to/tidus_credentials.conf -d /path/to/the/dumps/folder`
   - Add all databases you want to dump from in the `dump_it` function!
-- `./tidus_backup_restore.sh -r /path/to/the/dumps/folder <Backup-Set-No>`
-  - Set the PGSERVER, PGPORT, PGUSER and PGPASSWD parameters in the `restore_db` function first!
+- `./tidus_backup_restore.sh /path/to/tidus_credentials.conf -r /path/to/the/dumps/folder <Backup-Set-No>`
   - Add all databases you want to restore - as well as the destination database names and users - in the `restore_it` function!
   - Be sure to have the `tidus_seq_rst.sql`in the same folder as the script which is required for a successful restore!
 
