@@ -34,9 +34,15 @@ The rules to ensure anonymization can be defined as follows
             -  `:type`  The type to which the column value and the condition value should be cast for comparision. Default is `text`.
             -  `:comparator`  Infix function with which to compare the values. Default is `=`
             -  `:result` Value which should be used as a replacement in case the condition is met.
+- `:ean`
+    - Replaces all or part of an ean code with a mapping of the digits to scramble the real value.
+    - Options:
+        - `:start` Defines the starting point in the value string. Defaults to the beginning if nothing is given.
+        - `:length` Defines the length of the translation. Defaults to the whole remaining length if nothing is given.
+        - `:cache_key` Allows to cache the generated mapping to re-use on another model. Will generate a new mapping if no caching is enabled.
 - `:email`
     -  Replaces the part before the `@` by an MD5 Hash of the value with the given length. A hash function is used to have anonymization while allowing to find out whether two addresses are the same.
-    -  Options:
+    - Options:
         -  `:length`    Specifies the length of the part which should be kept before the `@`. Default is 15. Maximum with MD5 is 32.
 - `:null`
     - Replaces any value with `NULL`
@@ -75,6 +81,7 @@ Note: to provide your own anonymization strategy you can also provide a class na
 |                  | PostgreSQL | SQLite3 | MySQL |
 |------------------|------------|---------|-------|
 | cond             |      √     |    x    |   x   |
+| ean              |      √     |    x    |   x   |
 | email            |      √     |    x    |   x   |
 | null             |      √     |    √    |   x   |
 | overlay          |      √     |    x    |   x   |
