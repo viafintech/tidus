@@ -1,5 +1,9 @@
 # encoding: utf-8
 
+require "rake"
+
+load "active_record/railties/databases.rake"
+
 Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each  { |file| require file }
 Dir["./spec/support/*.rb"].each { |f| require f }
 require 'active_record'
@@ -9,7 +13,6 @@ RSpec.configure do |config|
   # The following 3 lines make this possible:
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
-  config.treat_symbols_as_metadata_keys_with_true_values = true
 
   config.mock_with :rspec do |c|
     c.syntax = [:should, :expect]
