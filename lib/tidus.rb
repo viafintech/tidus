@@ -9,5 +9,5 @@ require "tidus/anonymization"
 require "tidus/strategies/base_selector"
 Dir["#{File.dirname(__FILE__)}/tidus/strategies/**/*.rb"].each { |f| require f }
 
-load "active_record/railties/databases.rake"
+load "active_record/railties/databases.rake" if defined?(Rails)
 load "tasks/views.rake"

@@ -16,14 +16,25 @@ describe "database view clearing rake task" do
 
     it "executes the rake task" do
       schema_migrations = Object.new
-      schema_migrations.should_receive(:table_name).and_return("schema_migrations")
+      expect(schema_migrations).to receive(:table_name).and_return("schema_migrations")
+
+      ar_internal_metadata = Object.new
+      expect(ar_internal_metadata).to receive(:table_name).and_return("ar_internal_metadata")
 
       another_table = Object.new
-      another_table.should_receive(:table_name).exactly(2).times.and_return("another_table")
-      another_table.should_receive(:view_name).and_return("another_table_anonymized")
-      another_table.should_receive(:clear_view)
+      expect(another_table)
+        .to receive(:table_name)
+        .exactly(2).times
+        .and_return("another_table")
+      expect(another_table)
+        .to receive(:view_name)
+        .and_return("another_table_anonymized")
+      expect(another_table)
+        .to receive(:clear_view)
 
-      ActiveRecord::Base.should_receive(:descendants).and_return([schema_migrations, another_table])
+      expect(ActiveRecord::Base)
+        .to receive(:descendants)
+        .and_return([schema_migrations, ar_internal_metadata, another_table])
       @rake[@rake_task_name].invoke
     end
   end
@@ -36,30 +47,49 @@ describe "database view clearing rake task" do
 
     it "executes the rake task" do
       schema_migrations = Object.new
-      schema_migrations.should_receive(:table_name).and_return("schema_migrations")
+      expect(schema_migrations).to receive(:table_name).and_return("schema_migrations")
+
+      ar_internal_metadata = Object.new
+      expect(ar_internal_metadata).to receive(:table_name).and_return("ar_internal_metadata")
 
       nonexistent = Object.new
-      nonexistent.should_receive(:table_name).exactly(2).times.and_return("nonexistent")
-      nonexistent.should_receive(:skip_anonymization?)
+      expect(nonexistent).to receive(:table_name).exactly(2).times.and_return("nonexistent")
+      expect(nonexistent).to receive(:skip_anonymization?)
 
       skip_anonymization = Object.new
       skip_anonymization.should_receive(:table_name).and_return("skip")
       skip_anonymization.should_receive(:skip_anonymization?).and_return(true)
 
       another_table = Object.new
-      another_table.should_receive(:table_name).exactly(3).times.and_return("another_table")
-      another_table.should_receive(:view_name).and_return("another_table_anonymized")
-      another_table.should_receive(:create_view)
-      another_table.should_receive(:skip_anonymization?)
+      expect(another_table).to receive(:table_name).exactly(3).times.and_return("another_table")
+      expect(another_table).to receive(:view_name).and_return("another_table_anonymized")
+      expect(another_table).to receive(:create_view)
+      expect(another_table).to receive(:skip_anonymization?)
 
-      ActiveRecord::Base.should_receive(:descendants)
-                        .and_return([schema_migrations, another_table,
-                                     nonexistent, skip_anonymization])
+      expect(ActiveRecord::Base)
+        .to receive(:descendants)
+        .and_return(
+          [
+            schema_migrations,
+            ar_internal_metadata,
+            another_table,
+            nonexistent,
+            skip_anonymization,
+          ],
+        )
       connection = Object.new
-      ActiveRecord::Base.should_receive(:connection).exactly(2).times
-                        .and_return(connection)
-      connection.should_receive(:table_exists?).with("nonexistent").and_return(false)
-      connection.should_receive(:table_exists?).with("another_table").and_return(true)
+      expect(ActiveRecord::Base)
+        .to receive(:connection)
+        .exactly(2).times
+        .and_return(connection)
+      expect(connection)
+        .to receive(:table_exists?)
+        .with("nonexistent")
+        .and_return(false)
+      expect(connection)
+        .to receive(:table_exists?)
+        .with("another_table")
+        .and_return(true)
       @rake[@rake_task_name].invoke
     end
   end

@@ -1,9 +1,16 @@
+skip_tables = [
+  'schema_migrations',
+  'ar_internal_metadata',
+]
+
 namespace :db do
   desc "Clears all the views which are currently existing"
   task :clear_views do
     Rails.application.eager_load! if defined?(Rails)
+
     ActiveRecord::Base.descendants.each do |c|
-      next if c.table_name == "schema_migrations"
+      next if skip_tables.include?(c.table_name)
+
       puts "Clearing view '#{c.view_name}' for table '#{c.table_name}'"
 
       c.clear_view
@@ -13,8 +20,9 @@ namespace :db do
   desc "Generates all the views for the models"
   task :generate_views do
     Rails.application.eager_load! if defined?(Rails)
+
     ActiveRecord::Base.descendants.each do |c|
-      next if c.table_name == "schema_migrations" || c.skip_anonymization?
+      next if skip_tables.include?(c.table_name) || c.skip_anonymization?
 
       if ActiveRecord::Base.connection.table_exists? c.table_name
         puts "Generating view '#{c.view_name}' for table '#{c.table_name}'"
