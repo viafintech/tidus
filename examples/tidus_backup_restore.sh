@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Tidus Anonymize Backup and Restore
-# v1.1 - Martin Seener (martin.seener@barzahlen.de)
+# v1.1 - Martin Seener (martin.seener@viafintech.com)
 
 # Dumps/Restores databases using the _anonymized views for tables only, except for the schema_migrations table.
 
