@@ -3,10 +3,10 @@
 module Tidus
   module Query
     def create_view_query_part
-      case connection.adapter_name.downcase
+      case connection.instance_values['config'][:adapter].to_s.downcase
       when 'postgresql'
         return 'CREATE OR REPLACE VIEW'
-      when 'sqlite'
+      when 'sqlite3'
         return 'CREATE VIEW IF NOT EXISTS'
       else
         return 'CREATE VIEW'

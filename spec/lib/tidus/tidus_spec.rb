@@ -134,8 +134,8 @@ describe Tidus::Anonymization do
     context 'when the adapter is postgresql' do
       before do
         allow(klass.connection)
-          .to receive(:adapter_name)
-                .and_return('postgresql')
+          .to receive(:instance_values)
+                .and_return({ 'config' => { :adapter => 'postgresql' } })
 
         @create_query = "CREATE OR REPLACE VIEW example_models_anonymized AS " +
           "SELECT example_models.id AS id, " +
@@ -151,8 +151,8 @@ describe Tidus::Anonymization do
     context 'when the adapter is sqlite' do
       before do
         allow(klass.connection)
-          .to receive(:adapter_name)
-                .and_return('sqlite')
+          .to receive(:instance_values)
+                .and_return({ 'config' => { :adapter => 'sqlite3' } })
 
         @create_query = "CREATE VIEW IF NOT EXISTS example_models_anonymized AS " +
           "SELECT example_models.id AS id, " +
@@ -168,8 +168,8 @@ describe Tidus::Anonymization do
     context 'when the adapter is something else' do
       before do
         allow(klass.connection)
-          .to receive(:adapter_name)
-                .and_return('mysql')
+          .to receive(:instance_values)
+                .and_return({ 'config' => { :adapter => 'mysql' } })
 
         @create_query = "CREATE VIEW example_models_anonymized AS " +
           "SELECT example_models.id AS id, " +
