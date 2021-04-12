@@ -101,42 +101,86 @@ describe Tidus::Anonymization do
   end
 
   context "query" do
-    before(:each) do
-      @postgres_config = { "config" => { :adapter => "postgresql" } }
-      @create_query = "CREATE VIEW example_models_anonymized AS " +
-        "SELECT example_models.id AS id, " +
-               "'test'::text AS name, " +
-               "example_models.key AS key " +
-        "FROM example_models"
-      @clear_query = "DROP VIEW IF EXISTS example_models_anonymized"
-    end
+    shared_examples_for 'query generation' do
+      context "#create_query" do
+        it "builds the query to create a view" do
+          klass.create_query.should == @create_query
+        end
+      end
 
-    context "#create_query" do
-      it "builds the query to create a view" do
-        klass.create_query.should == @create_query
+      context "#clear_query" do
+        it "builds the query to clear a view" do
+          klass.clear_query.should == @clear_query
+        end
+      end
+
+      context "#create_view" do
+        it "executes the query to create a view" do
+          klass.connection.should_receive(:execute)
+               .with(klass.create_query)
+          klass.create_view
+        end
+      end
+
+      context "#clear_view" do
+        it "executes the query to clear a view" do
+          klass.connection.should_receive(:execute)
+               .with(klass.clear_query)
+          klass.clear_view
+        end
       end
     end
 
-    context "#clear_query" do
-      it "builds the query to clear a view" do
-        klass.clear_query.should == @clear_query
+    context 'when the adapter is postgresql' do
+      before do
+        allow(klass.connection)
+          .to receive(:instance_values)
+                .and_return({ 'config' => { :adapter => 'postgresql' } })
+
+        @create_query = "CREATE OR REPLACE VIEW example_models_anonymized AS " +
+          "SELECT example_models.id AS id, " +
+                 "'test'::text AS name, " +
+                 "example_models.key AS key " +
+          "FROM example_models"
+        @clear_query = "DROP VIEW IF EXISTS example_models_anonymized"
       end
+
+      it_behaves_like 'query generation'
     end
 
-    context "#create_view" do
-      it "executes the query to create a view" do
-        klass.connection.should_receive(:execute)
-             .with(klass.create_query)
-        klass.create_view
+    context 'when the adapter is sqlite' do
+      before do
+        allow(klass.connection)
+          .to receive(:instance_values)
+                .and_return({ 'config' => { :adapter => 'sqlite3' } })
+
+        @create_query = "CREATE VIEW IF NOT EXISTS example_models_anonymized AS " +
+          "SELECT example_models.id AS id, " +
+                 "'test'::text AS name, " +
+                 "example_models.key AS key " +
+          "FROM example_models"
+        @clear_query = "DROP VIEW IF EXISTS example_models_anonymized"
       end
+
+      it_behaves_like 'query generation'
     end
 
-    context "#clear_view" do
-      it "executes the query to clear a view" do
-        klass.connection.should_receive(:execute)
-             .with(klass.clear_query)
-        klass.clear_view
+    context 'when the adapter is something else' do
+      before do
+        allow(klass.connection)
+          .to receive(:instance_values)
+                .and_return({ 'config' => { :adapter => 'mysql' } })
+
+        @create_query = "CREATE VIEW example_models_anonymized AS " +
+          "SELECT example_models.id AS id, " +
+                 "'test'::text AS name, " +
+                 "example_models.key AS key " +
+          "FROM example_models"
+        @clear_query = "DROP VIEW IF EXISTS example_models_anonymized"
       end
+
+      it_behaves_like 'query generation'
     end
+
   end
 end

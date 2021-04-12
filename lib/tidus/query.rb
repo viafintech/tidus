@@ -2,8 +2,19 @@
 
 module Tidus
   module Query
+    def create_view_query_part
+      case connection.instance_values['config'][:adapter].to_s.downcase
+      when 'postgresql'
+        return 'CREATE OR REPLACE VIEW'
+      when 'sqlite3'
+        return 'CREATE VIEW IF NOT EXISTS'
+      else
+        return 'CREATE VIEW'
+      end
+    end
+
     def create_query
-      "CREATE VIEW #{view_name} AS " +
+      "#{create_view_query_part} #{view_name} AS " +
       "SELECT #{view_columns.join(', ')} " +
       "FROM #{table_name}"
     end
