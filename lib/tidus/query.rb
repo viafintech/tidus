@@ -2,6 +2,7 @@
 
 module Tidus
   module Query
+
     def create_view_query_part
       case connection.instance_values['config'][:adapter].to_s.downcase
       when 'postgresql'
@@ -15,8 +16,8 @@ module Tidus
 
     def create_query
       "#{create_view_query_part} #{view_name} AS " +
-      "SELECT #{view_columns.join(', ')} " +
-      "FROM #{table_name}"
+        "SELECT #{view_columns.join(', ')} " +
+        "FROM #{table_name}"
     end
 
     def create_view
@@ -34,5 +35,6 @@ module Tidus
     def clear_view
       connection.execute(clear_query)
     end
+
   end
 end

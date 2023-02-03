@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tidus (1.2.3)
+    tidus (1.2.4)
       activerecord (>= 5.2)
 
 GEM
@@ -52,4 +52,4 @@ DEPENDENCIES
   tidus!
 
 BUNDLED WITH
-   2.4.3
+   2.4.2

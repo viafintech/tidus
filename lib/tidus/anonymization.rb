@@ -2,6 +2,7 @@
 
 module Tidus
   module Anonymization
+
     include Tidus::Query
 
     def skip_anonymization
@@ -13,7 +14,7 @@ module Tidus
     end
 
     def view_postfix
-      @view_postfix || "anonymized"
+      @view_postfix || 'anonymized'
     end
 
     def view_postfix=(val)
@@ -30,9 +31,10 @@ module Tidus
 
     def view_columns
       @view_columns ||= {}
-      default_view_columns.merge(@view_columns)
-                          .map{ |k,v| ["#{v} AS #{k}"] }
-                          .flatten
+      default_view_columns
+        .merge(@view_columns)
+        .map { |k, v| ["#{v} AS #{k}"] }
+        .flatten
     end
 
     def default_view_columns
@@ -49,8 +51,8 @@ module Tidus
       options = attributes.extract_options!.dup
       columns = attributes - [options]
 
-      raise ArgumentError, "Must have at least one attribute" if attributes.empty?
-      raise ArgumentError, "Must have a strategy" if options[:strategy].blank?
+      raise ArgumentError.new('Must have at least one attribute') if attributes.empty?
+      raise ArgumentError.new('Must have a strategy') if options[:strategy].blank?
 
       columns.each do |column|
         key = options[:strategy].to_s.camelize
@@ -62,14 +64,14 @@ module Tidus
             klass = const_get("Tidus::#{key}Anonymizer")
           end
         rescue NameError
-          raise ArgumentError, "Unknown anonymizer: '#{key}'"
+          raise ArgumentError.new("Unknown anonymizer: '#{key}'")
         end
 
         @view_columns[column.to_sym] = klass.anonymize(table_name, column, options)
       end
     end
 
-	end
+  end
 end
 
 ActiveRecord::Base.extend Tidus::Anonymization

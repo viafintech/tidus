@@ -4,7 +4,7 @@ skip_tables = [
 ]
 
 namespace :db do
-  desc "Clears all the views which are currently existing"
+  desc 'Clears all the views which are currently existing'
   task :clear_views do
     Rails.application.eager_load! if defined?(Rails)
 
@@ -17,7 +17,7 @@ namespace :db do
     end
   end
 
-  desc "Generates all the views for the models"
+  desc 'Generates all the views for the models'
   task :generate_views do
     Rails.application.eager_load! if defined?(Rails)
 
@@ -33,13 +33,13 @@ namespace :db do
   end
 end
 
-Rake::Task["db:migrate"].enhance ["db:clear_views"]
-Rake::Task["db:rollback"].enhance ["db:clear_views"]
+Rake::Task['db:migrate'].enhance ['db:clear_views']
+Rake::Task['db:rollback'].enhance ['db:clear_views']
 
-Rake::Task["db:migrate"].enhance do
-  Rake::Task["db:generate_views"].invoke
+Rake::Task['db:migrate'].enhance do
+  Rake::Task['db:generate_views'].invoke
 end
 
-Rake::Task["db:rollback"].enhance do
-  Rake::Task["db:generate_views"].invoke
+Rake::Task['db:rollback'].enhance do
+  Rake::Task['db:generate_views'].invoke
 end
