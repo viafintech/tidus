@@ -52,6 +52,10 @@ The rules to ensure anonymization can be defined as follows
         - `:start`  Defines the starting point in the value string. (required)
         - `:length` Defines the length of the overlay. (required)
         - `:char`   Defines the character which should be used as an overlay. Default is 'X'.
+- `:sha256`
+    - Applies hash SHA256 to the column content and encodes it as a hex string.
+    - Options:
+        -  `:length`    Specifies the length of the resulting string that can be used. Necessary if the column length is not as long as the resulting string. Defaults to `64`.
 - `:static`
     - Similar to the `:null` strategy, this strategy allows defining a specific value with which to replace the column value.
     - Options:
@@ -80,15 +84,16 @@ Note: to provide your own anonymization strategy you can also provide a class na
 
 |                  | PostgreSQL | SQLite3 | MySQL |
 |------------------|------------|---------|-------|
-| cond             |      √     |    x    |   x   |
-| ean              |      √     |    x    |   x   |
-| email            |      √     |    x    |   x   |
-| null             |      √     |    √    |   x   |
-| overlay          |      √     |    x    |   x   |
-| static           |      √     |    x    |   x   |
-| text             |      √     |    x    |   x   |
-| replace          |      √     |    x    |   x   |
-| remove_json_keys |      √     |    x    |   x   |
+| cond             |      ✅     |    ❌    |   ❌   |
+| ean              |      ✅     |    ❌    |   ❌   |
+| email            |      ✅     |    ❌    |   ❌   |
+| null             |      ✅     |    ✅    |   ❌   |
+| overlay          |      ✅     |    ❌    |   ❌   |
+| sha256           |      ✅ (requires pgcrypto)    |    ❌    |   ❌   |
+| static           |      ✅     |    ❌    |   ❌   |
+| text             |      ✅     |    ❌    |   ❌   |
+| replace          |      ✅     |    ❌    |   ❌   |
+| remove_json_keys |      ✅     |    ❌    |   ❌   |
 
 Currently the Gem only contains strategy implementations for PostgreSQL.
 
