@@ -24,7 +24,7 @@ describe Tidus::Postgresql::EmailAnonymizer do
     result.should == "CASE WHEN ((foo.bar)::text ~~ '%@%'::text) " +
             "THEN (((\"left\"(md5((foo.bar)::text), 10) || '@'::text) " +
             "|| (\"left\"(md5(split_part((foo.bar)::text, '@'::text, 2)::text), 10) || '.com')" +
-            ")::character varying " +
+            "))::character varying " +
             "ELSE foo.bar END"
   end
 end

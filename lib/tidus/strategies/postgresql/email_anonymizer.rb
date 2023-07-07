@@ -9,7 +9,7 @@ module Tidus
 
         return "CASE WHEN ((#{name})::text ~~ '%@%'::text) " +
                "THEN (((\"left\"(md5((#{name})::text), #{length}) || '@'::text) " +
-                "|| #{domain_part(name, anonymize_domain, length)})::character varying " +
+                "|| #{domain_part(name, anonymize_domain, length)}))::character varying " +
                 "ELSE #{name} END"
       end
 
@@ -19,7 +19,7 @@ module Tidus
                  "|| '.com')"
         end
 
-        return "split_part((#{name})::text, '@'::text, 2))"
+        return "split_part((#{name})::text, '@'::text, 2)"
       end
 
     end
