@@ -43,7 +43,8 @@ The rules to ensure anonymization can be defined as follows
 - `:email`
     -  Replaces the part before the `@` by an MD5 Hash of the value with the given length. A hash function is used to have anonymization while allowing to find out whether two addresses are the same.
     - Options:
-        -  `:length`    Specifies the length of the part which should be kept before the `@`. Default is 15. Maximum with MD5 is 32.
+        -  `:length`    Specifies the length of the part which should be kept before the `@` as well as for domain part when it is anonymized. Default is 15. Maximum with MD5 is 32.
+        -  `:anonymize_domain` Specifies whether the domain part of the mail should also be anonymized.
 - `:null`
     - Replaces any value with `NULL`
 - `:overlay`
