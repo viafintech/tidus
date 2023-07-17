@@ -7,7 +7,7 @@ module Tidus
 
         length = options[:length] || 64
 
-        return "SUBSTR(ENCODE(DIGEST(#{name}, 'sha256')::TEXT, 'HEX'), 0, #{length.to_i + 1})"
+        return "SUBSTR(ENCODE(DIGEST(#{name}, 'sha256')::BYTEA, 'HEX'), 0, #{length.to_i + 1})"
       end
 
     end
