@@ -12,7 +12,8 @@ Tidus is a Ruby Gem which works in conjunction with ActiveRecord to automaticall
 
 2. Require the Gem at any point after ActiveRecord but before loading the models. Rails requires all Gems in the Gemfile by default.
 3. Add your anonymization rules
-4. Execute `rake db:migrate`. The `db:clear_views` and `db:generate_views` tasks are hooked to automatically run every time before and after execution of `db:migrate` or `db:rollback`.
+4. Add `load 'tasks/tidus_views.rake'` after `Rails.application.load_tasks` in the Rakefile if it is a Rails application. Otherwise it will be required automatically.
+5. Execute `rake db:migrate`. The `db:clear_views` and `db:generate_views` tasks are hooked to automatically run every time before and after execution of `db:migrate` or `db:rollback`.
 
 ## Anonymization rules
 The rules to ensure anonymization can be defined as follows

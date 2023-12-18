@@ -4,7 +4,7 @@ describe "database view clearing rake task" do
   before(:each) do
     Rake.application = @rake = Rake::Application.new
     load 'active_record/railties/databases.rake'
-    load "lib/tasks/views.rake"
+    load "lib/tasks/tidus_views.rake"
     $stdout.stub(:write) # suppress output from rake task
   end
 
