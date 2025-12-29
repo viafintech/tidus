@@ -37,8 +37,11 @@ GEM
       concurrent-ruby (~> 1.0)
     logger (1.7.0)
     mini_portile2 (2.8.5)
-    minitest (5.25.5)
+    minitest (6.0.1)
+      prism (~> 1.5)
     mutex_m (0.3.0)
+    ostruct (0.6.3)
+    prism (1.7.0)
     rake (13.1.0)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
@@ -54,16 +57,17 @@ GEM
       rspec-support (~> 3.12.0)
     rspec-support (3.12.1)
     securerandom (0.4.1)
-    sqlite3 (1.6.9)
+    sqlite3 (1.7.3)
       mini_portile2 (~> 2.8.0)
     timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
 
 PLATFORMS
-  ruby
+  arm64-darwin-25
 
 DEPENDENCIES
+  ostruct
   rake (~> 13.1)
   rspec (~> 3.12)
   sqlite3 (~> 1.6)
