@@ -3,10 +3,6 @@ require 'spec_helper'
 describe Tidus::Anonymization do
   subject(:klass) { ExampleModel }
 
-  before(:each) do
-    ActiveRecord::Base.stub(:connection_pool)
-  end
-
   after(:each) do
     klass.view_postfix = nil
     klass.view_name = nil

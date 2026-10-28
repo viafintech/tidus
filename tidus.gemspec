@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "rake",    "~> 13.1"
   spec.add_development_dependency "rspec",   "~> 3.12"
-  spec.add_development_dependency "sqlite3", "~> 1.6"
+  spec.add_development_dependency "sqlite3", "~> 2.9", ">= 2.9.6"
   spec.add_development_dependency "ostruct"
 
   spec.add_dependency "activerecord", ">= 5.2"
